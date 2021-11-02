@@ -1,0 +1,8 @@
+notifier:
+  triggerGasPrice: ${TRIGGER_GAS_PRICE}
+  telegramApi: ${TELEGRAM_API}
+  telegramToken: ${TELEGRAM_TOKEN}
+  telegramChatId: ${TELEGRAM_CHAT_ID}
+  etherscanApi: ${ETHERSCAN_API}
+  etherscanToken: ${ETHERSCAN_TOKEN}
+
