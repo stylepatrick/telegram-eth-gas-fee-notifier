@@ -32,14 +32,16 @@ public class EthGasFeeApi {
             double percentage = Math.abs(((Integer.parseInt(current.getResult().getProposeGasPrice()) * 100) /Integer.parseInt(previous.getResult().getProposeGasPrice())) - 100);
             if (Integer.parseInt(current.getResult().getProposeGasPrice()) > appConfig.getTriggerGasPrice() && !sendState) {
                 sendTelegramNotification(current);
+                previous = current;
                 sendState = true;
             } else if (Integer.parseInt(current.getResult().getProposeGasPrice()) <= appConfig.getTriggerGasPrice() && percentage >= appConfig.getTriggerPercentage() && !sendState) {
                 sendTelegramNotification(current);
+                previous = current;
             } else if (Integer.parseInt(current.getResult().getProposeGasPrice()) <= appConfig.getTriggerGasPrice() && sendState) {
                 sendTelegramNotification(current);
+                previous = current;
                 sendState = false;
             }
-            previous = current;
         }
     }
 
