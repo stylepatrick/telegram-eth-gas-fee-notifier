@@ -20,17 +20,26 @@ import java.net.URLEncoder;
 public class EthGasFeeApi {
 
     private final AppConfig appConfig;
-    private final Integer delayNotificationInterval = 10000;
+    private static GasOracle previous;
+    private static boolean sendState = true;
 
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedDelay = 10000)
     private void scheduledGasFeeCall() {
-        if (Integer.parseInt(getGasFee().getResult().getProposeGasPrice()) <= appConfig.getTriggerGasPrice()) {
-            sendTelegramNotification(getGasFee());
-            try {
-                Thread.sleep(delayNotificationInterval);
-            } catch (InterruptedException ie) {
-                Thread.currentThread().interrupt();
+        if (previous == null) {
+            previous = getGasFee();
+        } else {
+            GasOracle current = getGasFee();
+            double percentage = Math.abs(((Integer.parseInt(current.getResult().getProposeGasPrice()) * 100) /Integer.parseInt(previous.getResult().getProposeGasPrice())) - 100);
+            if (Integer.parseInt(current.getResult().getProposeGasPrice()) > appConfig.getTriggerGasPrice() && !sendState) {
+                sendTelegramNotification(current);
+                sendState = true;
+            } else if (Integer.parseInt(current.getResult().getProposeGasPrice()) <= appConfig.getTriggerGasPrice() && percentage >= 20 && !sendState) {
+                sendTelegramNotification(current);
+            } else if (Integer.parseInt(current.getResult().getProposeGasPrice()) <= appConfig.getTriggerGasPrice() && sendState) {
+                sendTelegramNotification(current);
+                sendState = false;
             }
+            previous = current;
         }
     }
 
