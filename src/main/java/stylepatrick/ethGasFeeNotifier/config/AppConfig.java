@@ -3,7 +3,6 @@ package stylepatrick.ethGasFeeNotifier.config;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class AppConfig {
 
     private Integer triggerGasPrice;
+    private Integer triggerPercentage;
     private String telegramApi;
     private String telegramToken;
     private String telegramChatId;

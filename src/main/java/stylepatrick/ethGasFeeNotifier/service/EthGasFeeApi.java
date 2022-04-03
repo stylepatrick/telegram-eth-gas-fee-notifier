@@ -33,7 +33,7 @@ public class EthGasFeeApi {
             if (Integer.parseInt(current.getResult().getProposeGasPrice()) > appConfig.getTriggerGasPrice() && !sendState) {
                 sendTelegramNotification(current);
                 sendState = true;
-            } else if (Integer.parseInt(current.getResult().getProposeGasPrice()) <= appConfig.getTriggerGasPrice() && percentage >= 20 && !sendState) {
+            } else if (Integer.parseInt(current.getResult().getProposeGasPrice()) <= appConfig.getTriggerGasPrice() && percentage >= appConfig.getTriggerPercentage() && !sendState) {
                 sendTelegramNotification(current);
             } else if (Integer.parseInt(current.getResult().getProposeGasPrice()) <= appConfig.getTriggerGasPrice() && sendState) {
                 sendTelegramNotification(current);
